@@ -1,0 +1,5 @@
+dirs:
+    deploy: /opt/appserver/webapps/magento2-ce-2.1.7
+
+docker:
+    target-container: appserver-1.1.4-magento

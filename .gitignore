@@ -1,0 +1,11 @@
+.buildpath
+.project
+.settings
+.DS_Store
+composer.lock
+/lib
+/target
+/vendor
+/projects/sample-data/tmp
+/projects/sample-data/magento2-sample-data
+/projects/.gitignore
