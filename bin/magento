@@ -1,0 +1,3 @@
+#!/bin/bash
+CMD="chmod +x /opt/appserver/webapps/magento2-ce-2.1.7/bin/magento && cd /opt/appserver/webapps/magento2-ce-2.1.7 && bin/magento $@"
+docker exec appserver-1.1.4-magento sh -c "$CMD"
