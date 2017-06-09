@@ -85,6 +85,13 @@ class InputOptionKeys
     const TARGET_DIR = 'target-dir';
 
     /**
+     * The input option key for the directory containing the flag to archive the imported files.
+     *
+     * @var string
+     */
+    const ARCHIVE_ARTEFACTS = 'archive-artefacts';
+
+    /**
      * The input option key for the directory containing the archived imported files.
      *
      * @var string

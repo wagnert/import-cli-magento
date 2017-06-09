@@ -73,7 +73,7 @@ class RoboFile extends AbstractRoboFile
      */
     protected function getDeployDir()
     {
-        return Robo::config()->get(sprintf('%s.%s', RoboFile::DIRS, RoboFile::DEPLOY);
+        return Robo::config()->get(sprintf('%s.%s', RoboFile::DIRS, RoboFile::DEPLOY));
     }
 
     /**
@@ -83,7 +83,7 @@ class RoboFile extends AbstractRoboFile
      */
     protected function getTargetContainer()
     {
-        return Robo::config()->get(sprintf('%s.%s.%s', RoboFile::DOCKER, RoboFile::TARGET_CONTAINER);
+        return Robo::config()->get(sprintf('%s.%s.%s', RoboFile::DOCKER, RoboFile::TARGET_CONTAINER));
     }
 
     /**
@@ -132,7 +132,6 @@ class RoboFile extends AbstractRoboFile
     public function prepare()
     {
         $this->taskFileSystemStack()
-             ->mkdir($this->getDistDir())
              ->mkdir($this->getTargetDir())
              ->mkdir($this->getReportsDir())
              ->run();

@@ -58,7 +58,7 @@ class InstallSchema implements InstallSchemaInterface
         // add indices necessary to optimize the importer performance
         $connection->addIndex('url_rewrite', $setup->getIdxName('url_rewrite', ['entity_id']), ['entity_id']);
         $connection->addIndex('url_rewrite', $setup->getIdxName('url_rewrite', ['entity_id', 'entity_type']), ['entity_id', 'entity_type']);
-        $connection->addIndex('catalog_product_entity_varchar',$setup->getIdxName('catalog_product_entity_varchar', ['value']), ['value']);
+        $connection->addIndex('catalog_product_entity_varchar', $setup->getIdxName('catalog_product_entity_varchar', ['value']), ['value']);
         $connection->addIndex('eav_attribute_option_value', $setup->getIdxName('eav_attribute_option_value', ['value']), ['value']);
         $connection->addIndex('catalog_product_entity_media_gallery', $setup->getIdxName('catalog_product_entity_media_gallery', ['value']), ['value']);
 

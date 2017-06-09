@@ -39,7 +39,12 @@ class InstallData implements InstallDataInterface
 {
 
     /**
-     * {@inheritdoc}
+     * Installs data for a module.
+     *
+     * @param \Magento\Framework\Setup\ModuleDataSetupInterface $setup   The setup instance
+     * @param \Magento\Framework\Setup\ModuleContextInterface   $context The module context instance
+     *
+     * @return void
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {

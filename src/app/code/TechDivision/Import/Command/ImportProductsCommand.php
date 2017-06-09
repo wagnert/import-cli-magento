@@ -84,7 +84,9 @@ class ImportProductsCommand extends Command
     /**
      * Constructor to initialize the command.
      *
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager The object manager instance
+     * @param \TechDivision\Import\App\Magento               $app                 The import application instance
+     * @param \Psr\Log\LoggerInterface                       $systemLogger        The system logger instance
+     * @param \TechDivision\Import\Model\ConfigurationLoader $configurationLoader The configuration loader instance
      */
     public function __construct(
         Magento $app,
@@ -102,7 +104,9 @@ class ImportProductsCommand extends Command
     }
 
     /**
-     * {@inheritdoc}
+     * Configures the current command.
+     *
+     * @return void
      */
     protected function configure()
     {

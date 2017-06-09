@@ -195,8 +195,8 @@ class ConfigurationLoader
                 sprintf(
                     'The jms/serializer libarary can not be found in one of "%s"',
                     implode(', ', $vendorDir)
-                    )
-                );
+                )
+            );
         }
 
         // register the autoloader for the JMS serializer annotations
@@ -309,6 +309,12 @@ class ConfigurationLoader
         // option, if yes override the value from the configuration file
         if ($archiveDir = $input->getOption(InputOptionKeys::ARCHIVE_DIR)) {
             $instance->setArchiveDir($archiveDir);
+        }
+
+        // query whether or not the debug mode has been specified as command line
+        // option, if yes override the value from the configuration file
+        if ($archiveArtefacts = $input->getOption(InputOptionKeys::ARCHIVE_ARTEFACTS)) {
+            $instance->setArchiveArtefacts($instance->mapBoolean($archiveArtefacts));
         }
 
         // query whether or not a source date format has been specified as command

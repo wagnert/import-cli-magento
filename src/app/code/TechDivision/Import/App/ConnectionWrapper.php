@@ -46,7 +46,8 @@ class ConnectionWrapper
      *
      * @param \Magento\Framework\App\ResourceConnection $connection The Magento resource connection
      */
-    public function __construct(ResourceConnection $connection) {
+    public function __construct(ResourceConnection $connection)
+    {
 
         // initialize the PDO connection
         $this->connection = $connection->getConnection(ResourceConnection::DEFAULT_CONNECTION)
