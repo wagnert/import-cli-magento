@@ -33,6 +33,7 @@ use TechDivision\Import\Utils\LoggerKeys;
 use TechDivision\Import\Utils\EntityTypeCodes;
 use TechDivision\Import\Model\ConfigurationLoader;
 use TechDivision\Import\Configuration\Jms\Configuration;
+use TechDivision\Import\Utils\CommandNames;
 
 /**
  * The command implementation to import products.
@@ -113,128 +114,30 @@ class ImportProductsCommand extends Command
 
         // initialize the array for the options
         $options = [
-            new InputArgument(
-                InputArgumentKeys::OPERATION_NAME,
-                InputArgument::OPTIONAL,
-                'Operation that has to be executed',
-                InputArgumentKeys::OPERATION_NAME_ARG_ADD_UPDATE
-            ),
-            new InputOption(
-                InputOptionKeys::INSTALLATION_DIR,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The magento installation directors to use',
-                getcwd()
-            ),
-            new InputOption(
-                InputOptionKeys::CONFIGURATION,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Path to the configuration file'
-            ),
-            new InputOption(
-                InputOptionKeys::SYSTEM_NAME,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Specify the system name to use',
-                gethostname()
-            ),
-            new InputOption(
-                InputOptionKeys::PID_FILENAME,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The explicit PID filename to use',
-                sprintf('%s/%s', sys_get_temp_dir(), Configuration::PID_FILENAME)
-            ),
-            new InputOption(
-                InputOptionKeys::MAGENTO_EDITION,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The Magento edition to be used, either one of "CE" or "EE"'
-            ),
-            new InputOption(
-                InputOptionKeys::MAGENTO_VERSION,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The Magento version to be used, e. g. "2.1.2"'
-            ),
-            new InputOption(
-                InputOptionKeys::CONFIGURATION,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Specify the pathname to the configuration file to use'
-            ),
-            new InputOption(
-                InputOptionKeys::ENTITY_TYPE_CODE,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Specify the entity type code to use, either one of "catalog_product", "catalog_category" or "eav_attribute"'
-            ),
-            new InputOption(
-                InputOptionKeys::SOURCE_DIR,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The directory that has to be watched for new files'
-            ),
-            new InputOption(
-                InputOptionKeys::TARGET_DIR,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The target directory with the files that has been imported'
-            ),
-            new InputOption(
-                InputOptionKeys::ARCHIVE_DIR,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The directory the imported files will be archived in'
-            ),
-            new InputOption(
-                InputOptionKeys::SOURCE_DATE_FORMAT,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The date format used in the CSV file(s)'
-            ),
-            new InputOption(
-                InputOptionKeys::USE_DB_ID,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The explicit database ID used for the actual import process'
-            ),
-            new InputOption(
-                InputOptionKeys::DB_PDO_DSN,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The DSN used to connect to the Magento database where the data has to be imported, e. g. mysql:host=127.0.0.1;dbname=magento;charset=utf8'
-            ),
-            new InputOption(
-                InputOptionKeys::DB_USERNAME,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The username used to connect to the Magento database'
-            ),
-            new InputOption(
-                InputOptionKeys::DB_PASSWORD,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The password used to connect to the Magento database'
-            ),
-            new InputOption(
-                InputOptionKeys::LOG_LEVEL,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The log level to use'
-            ),
-            new InputOption(
-                InputOptionKeys::DEBUG_MODE,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Whether use the debug mode or not'
-            )
+            new InputArgument(InputArgumentKeys::OPERATION_NAME, InputArgument::OPTIONAL, 'Operation that has to be executed', InputArgumentKeys::OPERATION_NAME_ARG_ADD_UPDATE),
+            new InputOption(InputOptionKeys::INSTALLATION_DIR, null, InputOption::VALUE_REQUIRED, 'The magento installation directors to use', getcwd()),
+            new InputOption(InputOptionKeys::CONFIGURATION, null, InputOption::VALUE_REQUIRED, 'Path to the configuration file'),
+            new InputOption(InputOptionKeys::SYSTEM_NAME, null, InputOption::VALUE_REQUIRED,'Specify the system name to use', gethostname()),
+            new InputOption(InputOptionKeys::PID_FILENAME, null,InputOption::VALUE_REQUIRED, 'The explicit PID filename to use', sprintf('%s/%s', sys_get_temp_dir(), Configuration::PID_FILENAME)),
+            new InputOption(InputOptionKeys::MAGENTO_EDITION, null, InputOption::VALUE_REQUIRED, 'The Magento edition to be used, either one of "CE" or "EE"'),
+            new InputOption(InputOptionKeys::MAGENTO_VERSION,  null, InputOption::VALUE_REQUIRED,  'The Magento version to be used, e. g. "2.1.2"'),
+            new InputOption(InputOptionKeys::CONFIGURATION, null, InputOption::VALUE_REQUIRED, 'Specify the pathname to the configuration file to use'),
+            new InputOption(InputOptionKeys::ENTITY_TYPE_CODE, null, InputOption::VALUE_REQUIRED, 'Specify the entity type code to use, either one of "catalog_product", "catalog_category" or "eav_attribute"'),
+            new InputOption(InputOptionKeys::SOURCE_DIR, null, InputOption::VALUE_REQUIRED, 'The directory that has to be watched for new files'),
+            new InputOption(InputOptionKeys::TARGET_DIR, null, InputOption::VALUE_REQUIRED, 'The target directory with the files that has been imported'),
+            new InputOption(InputOptionKeys::ARCHIVE_DIR, null, InputOption::VALUE_REQUIRED, 'The directory the imported files will be archived in'),
+            new InputOption(InputOptionKeys::SOURCE_DATE_FORMAT, null, InputOption::VALUE_REQUIRED, 'The date format used in the CSV file(s)'),
+            new InputOption(InputOptionKeys::USE_DB_ID, null, InputOption::VALUE_REQUIRED, 'The explicit database ID used for the actual import process'),
+            new InputOption(InputOptionKeys::DB_PDO_DSN, null, InputOption::VALUE_REQUIRED, 'The DSN used to connect to the Magento database where the data has to be imported, e. g. mysql:host=127.0.0.1;dbname=magento;charset=utf8'),
+            new InputOption(InputOptionKeys::DB_USERNAME, null, InputOption::VALUE_REQUIRED, 'The username used to connect to the Magento database'),
+            new InputOption(InputOptionKeys::DB_PASSWORD, null, InputOption::VALUE_REQUIRED, 'The password used to connect to the Magento database'),
+            new InputOption(InputOptionKeys::LOG_LEVEL, null, InputOption::VALUE_REQUIRED, 'The log level to use'),
+            new InputOption(InputOptionKeys::DEBUG_MODE, null, InputOption::VALUE_REQUIRED, 'Whether use the debug mode or not')
         ];
 
         // initialize the command
-        $this->setName('import:products')
-             ->setDescription('Import Products')
+        $this->setName(CommandNames::IMPORT_PRODUCTS)
+             ->setDescription('Imports products in the configured Magento 2 instance')
              ->setDefinition($options);
 
         // call parent method

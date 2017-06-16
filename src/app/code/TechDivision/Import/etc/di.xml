@@ -23,17 +23,22 @@
     <preference for="Magento\Framework\Shell\CommandRendererInterface" type="Magento\Framework\Shell\CommandRenderer" />
     <preference for="TechDivision\Import\Services\ImportProcessorInterface" type="TechDivision\Import\Services\ImportProcessor" />
     <preference for="TechDivision\Import\Services\RegistryProcessorInterface" type="TechDivision\Import\Services\RegistryProcessor" />
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="importCommand" xsi:type="object">TechDivision\Import\Command\ImportProductsCommand</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="TechDivision\Import\Model\ConfigurationLoader">
         <arguments>
             <argument name="vendorDir" xsi:type="string">../../../vendor</argument>
             <argument name="configurationFactoryClass" xsi:type="string">TechDivision\Import\Configuration\Jms\ConfigurationFactory</argument>
         </arguments>
     </type>
-    <type name="Magento\Framework\Console\CommandListInterface">
+    <type name="TechDivision\Import\Repositories\CategoryRepository">
         <arguments>
-            <argument name="commands" xsi:type="array">
-                <item name="importCommand" xsi:type="object">TechDivision\Import\Command\ImportProductsCommand</item>
-            </argument>
+            <argument name="utilityClassName" xsi:type="string">TechDivision\Import\Utils\SqlStatements</argument>
         </arguments>
     </type>
 </config>

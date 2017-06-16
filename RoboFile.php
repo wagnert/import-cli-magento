@@ -46,6 +46,20 @@ class RoboFile extends AbstractRoboFile
     const DIRS = 'dirs';
 
     /**
+     * Configuration key for the source directory.
+     *
+     * @var string
+     */
+    const SRC = 'src';
+
+    /**
+     * Configuration key for the destination directory.
+     *
+     * @var string
+     */
+    const DEST = 'dest';
+
+    /**
      * Configuration key for the deploy directory.
      *
      * @var string
@@ -83,7 +97,37 @@ class RoboFile extends AbstractRoboFile
      */
     protected function getTargetContainer()
     {
-        return Robo::config()->get(sprintf('%s.%s.%s', RoboFile::DOCKER, RoboFile::TARGET_CONTAINER));
+        return Robo::config()->get(sprintf('%s.%s', RoboFile::DOCKER, RoboFile::TARGET_CONTAINER));
+    }
+
+    /**
+     * Returns the Magento 2 root directory inside the docker container.
+     *
+     * @return string The Magento 2 root directory
+     */
+    protected function getDockerMagentoRootDir()
+    {
+        return Robo::config()->get(sprintf('%s.%s.%s', RoboFile::DOCKER, RoboFile::DIRS, RoboFile::DEPLOY));
+    }
+
+    /**
+     * Returns the synchronization source directory inside the docker container.
+     *
+     * @return string The synchronization source directory
+     */
+    protected function getDockerSyncSrcDir()
+    {
+        return Robo::config()->get(sprintf('%s.%s.%s', RoboFile::DOCKER, RoboFile::DIRS, RoboFile::SRC));
+    }
+
+    /**
+     * Returns the synchronization destination directory inside the docker container.
+     *
+     * @return string The synchronization destination directory
+     */
+    protected function getDockerSyncDestDir()
+    {
+        return Robo::config()->get(sprintf('%s.%s.%s', RoboFile::DOCKER, RoboFile::DIRS, RoboFile::DEST));
     }
 
     /**
@@ -223,7 +267,7 @@ class RoboFile extends AbstractRoboFile
      *
      * @return void
      */
-    public function deployDocker()
+    public function dockerDeploy()
     {
 
         // copy the file itself
@@ -231,6 +275,85 @@ class RoboFile extends AbstractRoboFile
              ->arg('cp')
              ->arg(sprintf('%s/app', $this->getSrcDir()))
              ->arg(sprintf('%s:%s', $this->getTargetContainer(), $this->getDeployDir()))
+             ->run();
+    }
+
+    /**
+     * Start's the synchronization between the local sources and the Magento 2 instance
+     * inside the container.
+     *
+     * @return void
+     */
+    public function dockerSync()
+    {
+
+        // copy the sources to the container
+        $this->dockerDeploy();
+
+        // start syncing the sources
+        $this->taskExec('docker')
+             ->arg('exec')
+             ->arg($this->getTargetContainer())
+             ->arg('bash')
+             ->arg('-c')
+             ->arg(
+                 sprintf(
+                     'cd %s && vendor/bin/robo sync %s %s',
+                     $this->getDockerMagentoRootDir(),
+                     $this->getDockerSyncSrcDir(),
+                     $this->getDockerSyncDestDir()
+                 )
+             )
+             ->run();
+    }
+
+    /**
+     * Invokes the Magento 2 setup:upgrade command inside the docker container.
+     *
+     * @params array $args The arguments to pass to the bin/magento script inside the docker container
+     *
+     * @return void
+     */
+    public function dockerMagento(array $args)
+    {
+
+        // if not argument has been passed, execute the info command
+        if (sizeof($args) === 0) {
+            $args = array('help');
+        }
+
+        // start syncing the sources
+        $this->taskExec('docker')
+             ->arg('exec')
+             ->arg($this->getTargetContainer())
+             ->arg('bash')
+             ->arg('-c')
+             ->arg(sprintf('cd %s && chmod +x bin/magento && bin/magento %s', $this->getDockerMagentoRootDir(), implode(' ', $args)))
+             ->run();
+    }
+
+    /**
+     * Invokes the passed Composer command inside the Magento root directory of the docker container.
+     *
+     * @params array $args The arguments to pass to the composer script inside the docker container
+     *
+     * @return void
+     */
+    public function dockerComposer(array $args)
+    {
+
+        // if not argument has been passed, execute the info command
+        if (sizeof($args) === 0) {
+            $args = array('help');
+        }
+
+        // start syncing the sources
+        $this->taskExec('docker')
+             ->arg('exec')
+             ->arg($this->getTargetContainer())
+             ->arg('bash')
+             ->arg('-c')
+             ->arg(sprintf('cd %s && composer %s', $this->getDockerMagentoRootDir(), implode(' ', $args)))
              ->run();
     }
 
