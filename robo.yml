@@ -1,9 +1,15 @@
 dirs:
-    deploy: /opt/appserver/webapps/magento2-ce-2.1.7
+    deploy: /opt/appserver/webapps/magento2-ce-2.1.7-sampledata
+
+command:
+    sync:
+        options: 
+            src: /root/Workspace/import-cli-magento/src
+            dest: /opt/appserver/webapps/magento2-ce-2.1.7-sampledata
 
 docker:
     target-container: appserver-1.1.4-magento
     dirs:
-        deploy: /opt/appserver/webapps/magento2-ce-2.1.7
+        deploy: /opt/appserver/webapps/magento2-ce-2.1.7-sampledata
         src:    /root/Workspace/import-cli-magento/src
-        dest:   /opt/appserver/webapps/magento2-ce-2.1.7
+        dest:   /opt/appserver/webapps/magento2-ce-2.1.7-sampledata

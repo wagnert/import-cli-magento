@@ -2,6 +2,7 @@
     "name": "techdivision/import-cli-magento",
     "description": "Magento CLI extension that provides single-threaded Magento 2 importing functionality based on M2IF",
     "license": "OSL-3.0",
+    "minimum-stability": "beta",
     "require": {
         "techdivision/import-cli-simple": "1.0.0-beta21"
     },
@@ -13,7 +14,8 @@
         "consolidation/robo": "~1.0",
         "henrikbjorn/lurker" : "~1.0",
         "squizlabs/php_codesniffer": "2.2.*",
-        "tomzx/php-semver-checker": "0.9.*"
+        "tomzx/php-semver-checker": "0.9.*",
+        "appserver-io/robo-tasks": "0.2.0"
     },
     "authors": [
         {

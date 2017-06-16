@@ -22,14 +22,12 @@ namespace TechDivision\Import\App;
 
 use Magento\Framework\ObjectManagerInterface;
 use TechDivision\Import\App\Simple;
+use TechDivision\Import\ConfigurationInterface;
 use TechDivision\Import\Services\ImportProcessorInterface;
 use TechDivision\Import\Services\RegistryProcessorInterface;
 
 /**
- * The M2IF - Simple Application implementation.
- *
- * This is a example application implementation that should give developers an impression
- * on how the M2IF could be used to implement their own Magento 2 importer.
+ * The M2IF - Magento Application implementation.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -53,18 +51,27 @@ class Magento extends Simple
      * @param \Magento\Framework\ObjectManagerInterface                $container         The DI container instance
      * @param \TechDivision\Import\Services\RegistryProcessorInterface $registryProcessor The registry processor instance
      * @param \TechDivision\Import\Services\ImportProcessorInterface   $importProcessor   The import processor instance
+     * @param \TechDivision\Import\ConfigurationInterface              $configuration     The system configuration
+     * @param \Symfony\Component\Console\Output\OutputInterface        $output            An OutputInterface instance
+     * @param array                                                    $systemLoggers     The array with the system logger instances
      */
     public function __construct(
         ObjectManagerInterface $container,
         RegistryProcessorInterface $registryProcessor,
-        ImportProcessorInterface $importProcessor
+        ImportProcessorInterface $importProcessor,
+        ConfigurationInterface $configuration,
+        OutputInterface $output,
+        array $systemLoggers
     ) {
 
         // register the shutdown function
         register_shutdown_function(array($this, 'shutdown'));
 
         // initialize the instance with the passed values
+        $this->output = $output;
         $this->container = $container;
+        $this->configuration = $configuration;
+        $this->systemLoggers = $systemLoggers;
         $this->importProcessor = $importProcessor;
         $this->registryProcessor = $registryProcessor;
     }

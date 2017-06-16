@@ -274,7 +274,7 @@ class RoboFile extends AbstractRoboFile
         $this->taskExec('docker')
              ->arg('cp')
              ->arg(sprintf('%s/app', $this->getSrcDir()))
-             ->arg(sprintf('%s:%s', $this->getTargetContainer(), $this->getDeployDir()))
+             ->arg(sprintf('%s:%s', $this->getTargetContainer(), $this->getDockerSyncDestDir()))
              ->run();
     }
 

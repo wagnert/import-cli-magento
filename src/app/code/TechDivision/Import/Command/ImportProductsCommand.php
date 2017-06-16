@@ -20,20 +20,14 @@
 
 namespace TechDivision\Import\Command;
 
-use Psr\Log\LoggerInterface;
-use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\Filesystem\DirectoryList;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TechDivision\Import\App\Magento;
-use TechDivision\Import\Utils\LoggerKeys;
-use TechDivision\Import\Utils\EntityTypeCodes;
-use TechDivision\Import\Model\ConfigurationLoader;
-use TechDivision\Import\Configuration\Jms\Configuration;
 use TechDivision\Import\Utils\CommandNames;
+use TechDivision\Import\Configuration\Jms\Configuration;
 
 /**
  * The command implementation to import products.
@@ -48,34 +42,6 @@ class ImportProductsCommand extends Command
 {
 
     /**
-     * Object manager to create various objects.
-     *
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    private $objectManager;
-
-    /**
-     * The importer configuration loader.
-     *
-     * @var \TechDivision\Import\Model\ConfigurationLoader
-     */
-    private $configurationLoader;
-
-    /**
-     * The directory list instance.
-     *
-     * @var \Magento\Framework\Filesystem\DirectoryList
-     */
-    private $directoryList;
-
-    /**
-     * The system logger instance.
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $systemLogger;
-
-    /**
      * The application instance.
      *
      * @var \TechDivision\Import\App\Magento
@@ -85,20 +51,12 @@ class ImportProductsCommand extends Command
     /**
      * Constructor to initialize the command.
      *
-     * @param \TechDivision\Import\App\Magento               $app                 The import application instance
-     * @param \Psr\Log\LoggerInterface                       $systemLogger        The system logger instance
-     * @param \TechDivision\Import\Model\ConfigurationLoader $configurationLoader The configuration loader instance
+     * @param \TechDivision\Import\App\Magento $app The import application instance
      */
-    public function __construct(
-        Magento $app,
-        LoggerInterface $systemLogger,
-        ConfigurationLoader $configurationLoader
-    ) {
+    public function __construct(agento $app) {
 
         // set passed instances
         $this->app = $app;
-        $this->systemLogger = $systemLogger;
-        $this->configurationLoader = $configurationLoader;
 
         // call parent constructor
         parent::__construct();
@@ -161,46 +119,6 @@ class ImportProductsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-        // initialize and load the importer configuration
-        /** @var \TechDivision\Import\ConfigurationInterface $configuration */
-        $configuration = $this->configurationLoader->load($input, EntityTypeCodes::CATALOG_PRODUCT);
-
-        // add the configuration as well as input/outut instances to the DI container
-        /*
-        $container->set(SynteticServiceKeys::INPUT, $input);
-        $container->set(SynteticServiceKeys::OUTPUT, $output);
-        $container->set(SynteticServiceKeys::CONFIGURATION, $configuration);
-        $container->set(SynteticServiceKeys::APPLICATION, $this->getApplication());
-        */
-
-        // add the PDO connection to the DI container
-        // $container->set(SynteticServiceKeys::CONNECTION, $connection);
-
-
-        // initialize the system logger
-        $loggers = array();
-
-        // add the system logger to the array with the configured loggers
-        $loggers[LoggerKeys::SYSTEM] = $this->systemLogger;
-
-        // append the configured loggers or override the default one
-        foreach ($configuration->getLoggers() as $loggerConfiguration) {
-            // load the factory class that creates the logger instance
-            $loggerFactory = $loggerConfiguration->getFactory();
-            // create the logger instance and add it to the available loggers
-            $loggers[$loggerConfiguration->getName()] = $loggerFactory::factory($configuration, $loggerConfiguration);
-        }
-
-        // add the system loggers to the DI container
-        // $container->set(SynteticServiceKeys::LOGGERS, $loggers);
-
-        // start the import process
-        // $container->get(SynteticServiceKeys::SIMPLE)->process();
-
-        $this->app->setOutput($output);
-        $this->app->setSystemLoggers($loggers);
-        $this->app->setConfiguration($configuration);
 
         $this->app->process();
 
