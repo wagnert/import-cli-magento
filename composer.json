@@ -4,7 +4,7 @@
     "license": "OSL-3.0",
     "minimum-stability": "beta",
     "require": {
-        "techdivision/import-cli-simple": "1.0.0-beta21"
+        "techdivision/import-cli-simple": "1.0.0-beta27"
     },
     "require-dev": {
         "phpmd/phpmd": "2.5.*",
