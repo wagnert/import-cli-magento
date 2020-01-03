@@ -21,7 +21,7 @@
 namespace TechDivision\Import\App;
 
 use Magento\Framework\ObjectManagerInterface;
-use TechDivision\Import\App\Simple;
+use Symfony\Component\Console\Output\OutputInterface;
 use TechDivision\Import\ConfigurationInterface;
 use TechDivision\Import\Services\ImportProcessorInterface;
 use TechDivision\Import\Services\RegistryProcessorInterface;

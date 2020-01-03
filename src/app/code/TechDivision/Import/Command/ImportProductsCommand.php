@@ -53,7 +53,7 @@ class ImportProductsCommand extends Command
      *
      * @param \TechDivision\Import\App\Magento $app The import application instance
      */
-    public function __construct(agento $app) {
+    public function __construct(Magento $app) {
 
         // set passed instances
         $this->app = $app;

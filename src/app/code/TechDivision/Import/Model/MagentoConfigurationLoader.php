@@ -22,6 +22,12 @@ namespace TechDivision\Import\Model;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use TechDivision\Import\Cli\ConfigurationLoader;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use TechDivision\Import\Cli\Configuration\LibraryLoader;
+use TechDivision\Import\ConfigurationFactoryInterface;
+use TechDivision\Import\Utils\CommandNames;
+use TechDivision\Import\Utils\Mappings\CommandNameToEntityTypeCode;
 
 /**
  * The configuration factory implementation.
@@ -32,7 +38,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
  * @link      https://github.com/techdivision/import-cli-magento
  * @link      http://www.techdivision.com
  */
-class MagentoConfigurationLoader extends Configuration
+class MagentoConfigurationLoader extends ConfigurationLoader
 {
 
     /**
@@ -48,7 +54,7 @@ class MagentoConfigurationLoader extends Configuration
      * @param \Magento\Framework\Filesystem\DirectoryList                     $directoryList                The directory list
      * @param \Symfony\Component\Console\Input\InputInterface                 $input                        The input instance
      * @param \Symfony\Component\DependencyInjection\ContainerInterface       $container                    The container instance
-     * @param \TechDivision\Import\Cli\LibraryLoader                          $libraryLoader                The configuration loader instance
+     * @param \TechDivision\Import\Cli\Configuration\LibraryLoader            $libraryLoader                The configuration loader instance
      * @param \TechDivision\Import\ConfigurationFactoryInterface              $configurationFactory         The configuration factory instance
      * @param \TechDivision\Import\Utils\CommandNames                         $commandNames                 The available command names
      * @param \TechDivision\Import\Utils\Mappings\CommandNameToEntityTypeCode $commandNameToEntityTypeCodes The mapping of the command names to the entity type codes
